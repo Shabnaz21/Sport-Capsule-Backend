@@ -42,12 +42,36 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result)
         })
+
         app.get("/products/:id", async (req, res) => {
             const id = req.params.id;
             const query = {
                 _id: new ObjectId(id),
             };
             const result = await productCollection.findOne(query);
+            res.send(result);
+        });
+
+        app.put("/products/:id", async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedProduct = {
+                $set: {
+                    name: data.name,
+                    brand: data.brand,
+                    price: data.price,
+                    rating: data.rating,
+                    type: data.type,
+                    photo: data.photo,
+                },
+            };
+            const result = await productCollection.updateOne(
+                filter,
+                updatedProduct,
+                options
+            );
             res.send(result);
         });
 
@@ -62,7 +86,6 @@ async function run() {
             const query = {
                 name: name,
             };
-            console.log(query);
             const result = await brandCollection.findOne(query);
             res.send(result);
         });
