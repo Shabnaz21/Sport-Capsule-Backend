@@ -27,9 +27,23 @@ async function run() {
         await client.connect();
 
         const database = client.db("SportDB");
+        const productCollection = database.collection("products");
         const brandCollection = database.collection("brand");
 
-// Brands load
+        // product related
+        app.post('/products', async (req, res) => {
+            const products = req.body;
+            const result = await productCollection.insertOne(products);
+            res.send(result);
+        })
+
+        app.get('/products', async (req, res) => {
+            const cursor = productCollection.find();
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
+     // Brands load
         app.get("/brands", async (req, res) => {
             const result = await brandCollection.find().toArray();
             res.send(result);
@@ -48,9 +62,9 @@ run().catch(console.dir);
 
 // checking server
 app.get('/', (req, res) => {
-    res.send('Your Server is running');
+    res.send('Sport Capsule Server is running');
 })
 
 app.listen(port, () => {
-    console.log(`Your Server is running on port: ${port}`);
+    console.log(`Sport Capsule Server is running on port: ${port}`);
 })
