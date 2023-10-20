@@ -29,6 +29,7 @@ async function run() {
         const database = client.db("SportDB");
         const productCollection = database.collection("products");
         const brandCollection = database.collection("brand");
+        const cartsCollection = database.collection("carts");
 
         // product related
         app.post('/products', async (req, res) => {
@@ -90,6 +91,15 @@ async function run() {
             res.send(result);
         });
 
+        // cart related 
+        app.post('/carts', async (req, res) => {
+            const users = req.body;
+            console.log(users);
+            const result = await cartsCollection.insertOne(users);
+            res.send(result);
+        })
+
+        
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
