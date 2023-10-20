@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 // middleWare 
 app.use(cors());
@@ -94,7 +94,6 @@ async function run() {
         // cart related 
         app.post('/carts', async (req, res) => {
             const users = req.body;
-            console.log(users);
             const result = await cartsCollection.insertOne(users);
             res.send(result);
         })
@@ -106,12 +105,8 @@ async function run() {
         })
 
         // per cart Find
-        app.get("/carts/:id", async (req, res) => {
-            const id = req.params.id;
-            const query = {
-                _id: new ObjectId(id),
-            };
-            const result = await cartsCollection.findOne(query);
+        app.get("/carts/:email", async (req, res) => {
+            const result = await cartsCollection.find().toArray();
             res.send(result);
         });
 
