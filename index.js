@@ -111,9 +111,9 @@ async function run() {
         });
 
         // delete
-        app.delete('/carts/:name', async (req, res) => {
-            const id = req.params.name;
-            const query = { name: id };
+        app.delete('/carts/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
             const result = await cartsCollection.deleteOne(query);
             res.send(result);
         });
