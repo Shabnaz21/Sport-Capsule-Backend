@@ -105,7 +105,7 @@ async function run() {
         })
 
         // per cart Find
-        app.get("/carts/:email", async (req, res) => {
+        app.get("/carts/:id", async (req, res) => {
             const result = await cartsCollection.find().toArray();
             res.send(result);
         });
